@@ -11,6 +11,9 @@
 ## Baseline model based on subtitles only
     
 To facilitate your modeling process, we provide a baseline model: a gradient boosting tree model trained on features of bag-of-words and tf-idf weighted word embedding (GloVe), using subtitles only. We also upload evaluation routines to help improve your model. 
+
+#### Install dependencies (Python 3.5+, pip3 required) 
+	pip3 install --no-cache-dir -r requirements.txt
     
 #### How to train
     python train.py
