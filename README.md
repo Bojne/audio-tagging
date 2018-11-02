@@ -22,6 +22,8 @@ To facilitate your modeling process, we provide a baseline model: a gradient boo
 ENV_NAME=calhacks
 make env-setup/$ENV_NAME
 source activate $ENV_NAME
+
+python -c "import nltk; nltk.download('stopwords')"
 ```
 
 ### Using pip directly (python 3.5+, pip3 required)
