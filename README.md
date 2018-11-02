@@ -3,23 +3,22 @@
 ## Datasets
     
     audio files for all videos -- *.wav (https://drive.google.com/drive/folders/1w_DIUk9QNJcxex5DRaPD__d2t-Zae-Zs?usp=sharing)
-    subtitles (train) -- subtitle_train.json
-    subtitles (test) -- subtitle_test.json
-    tags (train) -- tags_train.csv
-    tags dictionary -- tags_dict.json
+    subtitles-train) -- data/subtitle_train.json
+    subtitles-test) -- data/subtitle_test.json
+    tags-train -- data/tags_train.csv
+    tag dictionary -- data/tags_dict.json
 
 ## Example model based on subtitles only
     
-    Features: bag of words, tf-idf+GloVe 
-    Algorithm: gradient boosting decision tree (XGBoost)    
-
-#### Training 
+    To facilitate your modeling process, we provide an example model: a gradient boosting tree model trained on features of bag-of-words and tf-idf weighted word embedding (GloVe), using subtitles only. We also upload evaluation routines to help improve your model. 
     
+#### How to train
     python train.py
-    
-#### Evaluation
-
+        input: subtitle_train.json, subtitle_test.json, tags_train.csv, tags_test.csv (constant prediction)
+        output: baseline_prediction.csv (submission file)
+        
+#### How to evaluate GAP for your prediction 
     python eval.py  
-        input: prediction, ground truth (same file format as in Submission File) 
+        input: prediction, actual (same file format as for submission file) 
         output: GAP 
     
