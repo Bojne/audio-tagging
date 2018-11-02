@@ -10,8 +10,7 @@ import argparse
 
 from bs4 import BeautifulSoup as bs
 from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import numpy as np
 np.random.seed(1111) 
 import pandas as pd
