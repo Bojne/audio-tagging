@@ -1,8 +1,6 @@
-
 import argparse
 import pandas as pd
 import average_precision_calculator
-
 
 def process(label):
     label_new = []
@@ -12,7 +10,6 @@ def process(label):
     return label_new
 
 def gap(merge_file):
-
     conf = []
     pred = []
     label = []
@@ -27,7 +24,6 @@ def gap(merge_file):
                 pred.append(pred_p[a])
                 label.append(merge_file.iloc[i]['Labels'])
                 true.append(1)
-            
             else:
                 conf.append(float(pred_p[(a+1)]))
                 pred.append(pred_p[a])
@@ -41,16 +37,15 @@ def gap(merge_file):
     ap = average_precision_calculator.AveragePrecisionCalculator.ap(p, a)
     return ap
 
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pred", type=str, help="prediction file, a csv file", default = '../data/baseline_prediction.csv')
-    parser.add_argument("--y", type=str, help="ground truth file, a csv file", default = '../data/tags_test.csv')
+    parser.add_argument("--pred_file", type=str, help="prediction file, a csv file", default = '../data/baseline_prediction.csv')
+    parser.add_argument("--y_file", type=str, help="ground truth file, a csv file", default = '../data/tags_test.csv')
  
     args = parser.parse_args()
-    pred_file = args.pred
-    y_file = args.y
+    pred_file = args.pred_file
+    y_file = args.y_file
 
     pred = pd.read_csv(pred_file)
     pred = pred[['AudioId','LabelConfidencePairs']]
