@@ -3,24 +3,24 @@ from math import log
 import re
 import time
 import gc
+import urllib.request
+import zipfile
+import os
 
 from bs4 import BeautifulSoup as bs
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import TruncatedSVD, PCA
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import CountVectorizer
-import lightgbm as lgb
 import numpy as np
 np.random.seed(1111) 
 import pandas as pd
 import xgboost as xgb
 
 def decontracted(phrase): # to be fixed for all cases 
-    # specific
+    ## specific
     phrase = re.sub(r"won't", "will not", phrase)
     phrase = re.sub(r"can\'t", "can not", phrase)
-    # general
+    ## general
     phrase = re.sub(r"n\'t", " not", phrase)
     phrase = re.sub(r"\'re", " are", phrase)
     phrase = re.sub(r"\'s", " is", phrase)
@@ -34,9 +34,9 @@ def decontracted(phrase): # to be fixed for all cases
 def infer_spaces(s):
     """Uses dynamic programming to infer the location of spaces in a string
     without spaces."""
-    # Find the best match for the i first characters, assuming cost has
-    # been built for the i-1 first characters.
-    # Returns a pair (match_cost, match_length).
+    ## Find the best match for the i first characters, assuming cost has
+    ## been built for the i-1 first characters.
+    ## Returns a pair (match_cost, match_length).
     words = open("./../data/words_by_frequency.txt").read().split()
     wordcost = dict((k, log((i+1)*log(len(words)))) for i,k in enumerate(words))
     maxword = max(len(x) for x in words)
@@ -60,11 +60,11 @@ def infer_spaces(s):
     return ' '.join(reversed(out))
 
 def rawtext_to_words(raw_text,remove_stopwords=True):
-    # remove HTML
+    ## remove HTML
     text = bs(raw_text, 'lxml').get_text()
-    # remove non-letter
+    ## remove non-letter
     text = re.sub('[^a-zA-Z]',' ', text)
-    # remove stopwords
+    ## remove stopwords
     words = text.lower().split()
     if remove_stopwords:
         stops = set(stopwords.words('english')) # searching set is faster than searching list in python
@@ -87,7 +87,6 @@ def label_conf_pair(x, k = 5):
     return ' '.join(["{} {:.4f}".format(a_, b_) for a_, b_ in zip(x.sort_values(ascending=False).index.values[:k], x.sort_values(ascending=False).values[:k])])
 
 def main():
-
     start = time.time()
 
     ## load subtitles
@@ -119,6 +118,13 @@ def main():
     word_lst = vectorizer.vocabulary_
     
     ## get word_embedding_matrix using GloVe
+    if os.path.isfile('./../data/glove.42B.300d.txt'):
+        pass
+    else:
+        urllib.request.urlretrieve("https://nlp.stanford.edu/data/wordvecs/glove.42B.300d.zip", filename="./../data/glove.42B.300d.zip")
+        with zipfile.ZipFile('./../data/glove.42B.300d.zip', 'r') as z:
+            z.extractall('./../data/')
+    
     glove_dic = loadGloveModel('../data/glove.42B.300d.txt')
     glove_matrix = []
     invalid_lst = {}
@@ -134,7 +140,7 @@ def main():
     
     ## prepare target label
     label_train = pd.read_csv('./../data/tags_train.csv')
-    label_test = pd.read_csv('./../data/tags_test_true.csv')
+    label_test = pd.read_csv('./../data/tags_test.csv')
 
     labels = pd.concat([label_train,label_test]) 
     labels['LabelConfidencePairs'] = labels['LabelConfidencePairs'].apply(lambda x: x.split()[0::2])
@@ -169,7 +175,7 @@ def main():
     
     pred_test['Labels'] = pred_test['LabelConfidencePairs'] 
     pred_test['LabelConfidencePairs'] = pred_test.iloc[:,2:24].apply(label_conf_pair, axis=1)
-    pred_test = pred_test[['AudioId','LabelConfidencePairs', 'Labels']]
+    pred_test = pred_test[['AudioId','LabelConfidencePairs']]
     pred_test.to_csv('./../data/baseline_prediction.csv', index=False)
 
     print('###### Run time %d seconds.' %(time.time()-start))
