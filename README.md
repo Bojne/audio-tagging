@@ -14,7 +14,7 @@ To facilitate your modeling process, we provide a baseline model: a gradient boo
     
 #### How to train
     python train.py
-        input: subtitle_train.json, subtitle_test.json, tags_train.csv, tags_test.csv (constant prediction)
+        input: subtitle_train.json, subtitle_test.json, tags_train.csv, tags_test.csv (constant label prediction)
         output: baseline_prediction.csv (submission file)
         
 #### How to evaluate GAP for your prediction 
