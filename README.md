@@ -8,9 +8,9 @@
     tags-train -- data/tags_train.csv
     tag dictionary -- data/tags_dict.json
 
-## Example model based on subtitles only
+## Baseline model based on subtitles only
     
-    To facilitate your modeling process, we provide an example model: a gradient boosting tree model trained on features of bag-of-words and tf-idf weighted word embedding (GloVe), using subtitles only. We also upload evaluation routines to help improve your model. 
+    To facilitate your modeling process, we provide a baseline model: a gradient boosting tree model trained on features of bag-of-words and tf-idf weighted word embedding (GloVe), using subtitles only. We also upload evaluation routines to help improve your model. 
     
 #### How to train
     python train.py
