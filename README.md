@@ -2,7 +2,7 @@
 
 ## Datasets
     
-    audio files for all videos -- (*.wav https://drive.google.com/drive/folders/1w_DIUk9QNJcxex5DRaPD__d2t-Zae-Zs?usp=sharing)
+    audio files for all videos -- *.wav (https://drive.google.com/drive/folders/1w_DIUk9QNJcxex5DRaPD__d2t-Zae-Zs?usp=sharing)
     subtitles (train) -- subtitle_train.json
     subtitles (test) -- subtitle_test.json
     tags (train) -- tags_train.csv
@@ -10,7 +10,7 @@
 
 ## Sample Model based on subtitles only
     
-    Feature: Bag of words, tf-idf+GloVe 
+    Features: Bag of words, tf-idf+GloVe 
     Model: Gradient Boosting Decision Tree (Xgboost)    
 
 #### Training 
