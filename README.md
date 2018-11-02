@@ -8,10 +8,10 @@
     tags (train) -- tags_train.csv
     tags dictionary -- tags_dict.json
 
-## Sample Model based on subtitles only
+## Example model based on subtitles only
     
-    Features: Bag of words, tf-idf+GloVe 
-    Model: Gradient Boosting Decision Tree (Xgboost)    
+    Features: bag of words, tf-idf+GloVe 
+    Algorithm: gradient boosting decision tree (XGBoost)    
 
 #### Training 
     
