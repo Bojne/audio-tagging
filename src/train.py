@@ -168,17 +168,16 @@ def main():
         pred = clf.predict(dtest)
         pred_test.append(pred)
         
-    ## create labels
+    print('Creating Submission File...')
     pred_test = pd.DataFrame(np.array(pred_test).transpose())
     pred_test['AudioId'] = label_test['AudioId']    
-    pred_test = pd.merge(label_test, pred_test, on = 'AudioId') 
-    
+    pred_test = pd.merge(label_test, pred_test, on = 'AudioId')
     pred_test['Labels'] = pred_test['LabelConfidencePairs'] 
     pred_test['LabelConfidencePairs'] = pred_test.iloc[:,2:24].apply(label_conf_pair, axis=1)
     pred_test = pred_test[['AudioId','LabelConfidencePairs']]
     pred_test.to_csv('./../data/baseline_prediction.csv', index=False)
 
-    print('###### Run time %d seconds.' %(time.time()-start))
+    print('###### Run time: %d seconds.' %(time.time()-start))
     
 if __name__ == "__main__":
     main()
