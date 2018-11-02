@@ -1,0 +1,6 @@
+beautifulsoup4 
+nltk
+scikit-learn
+numpy
+pandas
+xgboost
