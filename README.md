@@ -14,6 +14,9 @@ To facilitate your modeling process, we provide a baseline model: a gradient boo
 
 #### Install dependencies (Python 3.5+, pip3 required) 
 	pip3 install --no-cache-dir -r requirements.txt
+    python3 
+    >>> import nltk
+    >>> nltk.download('stopwords')
     
 #### How to train
     python train.py
