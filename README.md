@@ -2,11 +2,11 @@
 
 ## Datasets
     
-    audio files for all videos -- *.wav (https://drive.google.com/drive/folders/1w_DIUk9QNJcxex5DRaPD__d2t-Zae-Zs?usp=sharing)
-    subtitles-train) -- data/subtitle_train.json
-    subtitles-test) -- data/subtitle_test.json
-    tags-train -- data/tags_train.csv
-    tag dictionary -- data/tags_dict.json
+audio files for all videos -- *.wav (https://drive.google.com/drive/folders/1w_DIUk9QNJcxex5DRaPD__d2t-Zae-Zs?usp=sharing)
+subtitles-train) -- data/subtitle_train.json
+subtitles-test) -- data/subtitle_test.json
+tags-train -- data/tags_train.csv
+tag dictionary -- data/tags_dict.json
 
 ## Baseline model based on subtitles only
     
