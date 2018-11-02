@@ -6,6 +6,7 @@ import gc
 import urllib.request
 import zipfile
 import os
+import argparse
 
 from bs4 import BeautifulSoup as bs
 from nltk.corpus import stopwords
@@ -67,12 +68,12 @@ def rawtext_to_words(raw_text,remove_stopwords=True):
     ## remove stopwords
     words = text.lower().split()
     if remove_stopwords:
-        stops = set(stopwords.words('english')) # searching set is faster than searching list in python
+        stops = set(stopwords.words('english')) 
         words = [w for w in words if not w in stops]
     return ' '.join(words)
 
 def loadGloveModel(gloveFile):
-    print ("Loading Glove Model")
+    print ("Loading GloVe Model")
     f = open(gloveFile,'r')
     model = {}
     for line in f:
@@ -87,14 +88,27 @@ def label_conf_pair(x, k = 5):
     return ' '.join(["{} {:.4f}".format(a_, b_) for a_, b_ in zip(x.sort_values(ascending=False).index.values[:k], x.sort_values(ascending=False).values[:k])])
 
 def main():
+
     start = time.time()
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sub_tr_dir", type=str, help="training subtitles, a json file", default = './../data/subtitle_train.json')
+    parser.add_argument("--sub_te_dir", type=str, help="testing subtitles, a json file", default = './../data/subtitle_test.json')
+    parser.add_argument("--label_train_dir", type=str, help="training tags, a csv file", default = './../data/tags_train.csv')
+    parser.add_argument("--label_test_dir", type=str, help="sample submission file, a csv file", default = './../data/tags_test.csv')
+    parser.add_argument("--pred_test_dir", type=str, help="submission file to save, a csv file", default = './../data/baseline_prediction.csv')
+
+    args = parser.parse_args()
+    sub_tr_dir = args.sub_tr_dir
+    sub_te_dir = args.sub_te_dir
+    label_train_dir = args.label_train_dir
+    label_test_dir = args.label_test_dir
+    pred_test_dir = args.pred_test_dir    
 
     ## load subtitles
-    train_dir = './../data/subtitle_train.json'
-    with open(train_dir) as f:
+    with open(sub_tr_dir) as f:
         sub_tr = json.load(f)
-    test_dir = './../data/subtitle_test.json'
-    with open(test_dir) as f:
+    with open(sub_te_dir) as f:
         sub_te = json.load(f)
     subtitles = {**sub_tr,**sub_te}
     
@@ -139,9 +153,8 @@ def main():
     text_glove_matrix = np.matmul(tfidf_matrix_deleted.T, np.array(glove_matrix))   
     
     ## prepare target label
-    label_train = pd.read_csv('./../data/tags_train.csv')
-    label_test = pd.read_csv('./../data/tags_test.csv')
-
+    label_train = pd.read_csv(label_train_dir)
+    label_test = pd.read_csv(label_test_dir)
     labels = pd.concat([label_train,label_test]) 
     labels['LabelConfidencePairs'] = labels['LabelConfidencePairs'].apply(lambda x: x.split()[0::2])
     label_encoded = labels['LabelConfidencePairs'].str.join('|').str.get_dummies()
@@ -175,7 +188,7 @@ def main():
     pred_test['Labels'] = pred_test['LabelConfidencePairs'] 
     pred_test['LabelConfidencePairs'] = pred_test.iloc[:,2:24].apply(label_conf_pair, axis=1)
     pred_test = pred_test[['AudioId','LabelConfidencePairs']]
-    pred_test.to_csv('./../data/baseline_prediction.csv', index=False)
+    pred_test.to_csv(pred_test_dir, index=False)
 
     print('###### Run time: %d seconds.' %(time.time()-start))
     
