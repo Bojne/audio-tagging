@@ -29,8 +29,8 @@ python -c "import nltk; nltk.download('stopwords')"
 ### Using pip directly (python 3.5+, pip3 required)
 ```bash 
 pip3 install --no-cache-dir -r requirements.txt
-python3 -c "import nltk; nltk.download('stopwords')"
 
+python3 -c "import nltk; nltk.download('stopwords')"
 ```
     
 ## How to train
