@@ -165,7 +165,7 @@ def main():
     
     ## xgboost classifier
     print("Training...")
-    params = {'max_depth':6, 'eta':0.4, 'colsample_bytree':0.3, 'silent': 1, 'booster':'gbtree', 'objective':'binary:logistic'}
+    params = {'max_depth':6, 'eta':0.3, 'colsample_bytree':0.3, 'silent': 1, 'booster':'gbtree', 'objective':'binary:logistic'}
     
     data_features  = np.concatenate((data_features,text_glove_matrix), axis=1)
     dtest = xgb.DMatrix(data_features[label_train.shape[0]:,:])
